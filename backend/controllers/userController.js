@@ -7,8 +7,8 @@ const User = require('../model/userModel')
 
 //Registering new user method:post  It is public
 const registerUser= asyncHandler(async (req,res)=>{
-    const {name,password,rollno,phoneno} = req.body 
-    if(!name ||  !password ||  !rollno || !phoneno){
+    const {name,password,rollno,phoneno,email} = req.body 
+    if(!name ||  !password ||  !rollno || !phoneno || !email){
         res.status(400)
         throw new Error('Please add all fields')
     }
@@ -29,6 +29,7 @@ const registerUser= asyncHandler(async (req,res)=>{
         name,
         phoneno,
         rollno,
+        email,
         password:hashedPassword
     })
 
@@ -38,6 +39,7 @@ const registerUser= asyncHandler(async (req,res)=>{
             name:user.name,
             rollno:user.rollno,
             phoneno:user.phoneno,
+            email:user.email,
             // token: generateToken(user._id)
         })
         // res.json(`${user.name} registered successfully`);

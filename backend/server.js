@@ -20,6 +20,7 @@ app.use(cookieParser())
 app.use('/api/goals',require('./routes/index')) //
 app.use('/api/users',require('./routes/userRoutes'))
 app.use('/api/teacher',require('./routes/teacherRoutes'))
+app.use('api/result',require('./routes/resultRoutes'))
 
 app.use(errorHandler)  //Overwrite the default error handler
 app.listen(port,()=>{
