@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,redirect,session,jsonify
+from flask import Flask, render_template, request,redirect,session,jsonify,make_response
 import requests
 from flask_cors import CORS
 from flask import jsonify
@@ -11,6 +11,7 @@ CORS(app)
 app.secret_key = 'your_secret_key'
 
 options = {"q1": None, "q2": None, "q3": None,"q4": None,"q5": None,"q6": None,"q7": None,"q8": None,"q9": None,"q10": None,"q11": None,"q12": None,"q13": None,"q14": None,"q15": None,"q16": None,"q17": None,"q18": None,"q19": None,"q20": None,"q21": None}
+userdetails={"name":None,"rollno":None,"phonono":None,"id":None}
 values=[]
 numbs={0:'Normal',1:'Severe',2:'Mild',3:'Moderate',4:'Extremely Severe'} 
 #final_predict = [[0, 0, 0]]
@@ -28,32 +29,48 @@ def questions():
         response.headers["Access-Control-Allow-Origin"] = "http://localhost:5173"
         response.headers["Access-Control-Allow-Headers"] = "Content-Type"
         response.headers["Access-Control-Allow-Methods"] = "POST"
+        return response
 
     elif request.method == "POST":
         data = request.json
-        options["q1"] = data['selectedoptionselectedoption1']
-        options["q2"] = data['selectedoptionselectedoption2']
-        options["q3"] = data['selectedoptionselectedoption3']
-        options["q4"] = data['selectedoptionselectedoption4']
-        options["q5"] = data['selectedoptionselectedoption5']
-        options["q6"] = data['selectedoptionselectedoption6']
-        options["q7"] = data['selectedoptionselectedoption7']
-        options["q8"] = data['selectedoptionselectedoption8']
-        options["q9"] = data['selectedoptionselectedoption9']
-        options["q10"] = data['selectedoptionselectedoption10']
-        options["q11"] = data['selectedoptionselectedoption11']
-        options["q12"] = data['selectedoptionselectedoption12']
-        options["q13"] = data['selectedoptionselectedoption13']
-        options["q14"] = data['selectedoptionselectedoption14']
-        options["q15"] = data['selectedoptionselectedoption15']
-        options["q16"] = data['selectedoptionselectedoption16']
-        options["q17"] = data['selectedoptionselectedoption17']
-        options["q18"] = data['selectedoptionselectedoption18']
-        options["q19"] = data['selectedoptionselectedoption19']
-        options["q20"] = data['selectedoptionselectedoption20']
-        options["q21"] = data['selectedoptionselectedoption21']
+        # options["q3"] = data['selectedoptionselectedoption3']
+        print("User details from Frontend:",data)
         
-        print(options)
+        options["q1"] = data['selectedOptions']['selectedoptionselectedoption1']
+        options["q2"] = data['selectedOptions']['selectedoptionselectedoption2']
+        options["q3"] = data['selectedOptions']['selectedoptionselectedoption3']
+        options["q4"] = data['selectedOptions']['selectedoptionselectedoption4']
+        options["q5"] = data['selectedOptions']['selectedoptionselectedoption5']
+        options["q6"] = data['selectedOptions']['selectedoptionselectedoption6']
+        options["q7"] = data['selectedOptions']['selectedoptionselectedoption7']
+        options["q8"] = data['selectedOptions']['selectedoptionselectedoption8']
+        options["q9"] = data['selectedOptions']['selectedoptionselectedoption9']
+        options["q10"] = data['selectedOptions']['selectedoptionselectedoption10']
+        options["q11"] = data['selectedOptions']['selectedoptionselectedoption11']
+        options["q12"] = data['selectedOptions']['selectedoptionselectedoption12']
+        options["q13"] = data['selectedOptions']['selectedoptionselectedoption13']
+        options["q14"] = data['selectedOptions']['selectedoptionselectedoption14']
+        options["q15"] = data['selectedOptions']['selectedoptionselectedoption15']
+        options["q16"] = data['selectedOptions']['selectedoptionselectedoption16']
+        options["q17"] = data['selectedOptions']['selectedoptionselectedoption17']
+        options["q18"] = data['selectedOptions']['selectedoptionselectedoption18']
+        options["q19"] = data['selectedOptions']['selectedoptionselectedoption19']
+        options["q20"] = data['selectedOptions']['selectedoptionselectedoption20']
+        options["q21"] = data['selectedOptions']['selectedoptionselectedoption21']
+        
+        userdetails["name"]=data['userdata']['name']
+        userdetails["rollno"]=data['userdata']['rollno']
+        userdetails["phoneno"]=data['userdata']['phoneno']
+        userdetails["id"]=data['userdata']['id']
+        
+        
+
+        
+        
+        # print(userdetails)
+        
+        print("options are:",options)
+        print("userdetails are:",userdetails)
         print("hi")
         print(data)
         
@@ -93,8 +110,9 @@ def questions():
         # return jsonify({'final_predict': final_predict_list})
 
         # return jsonify({'message': 'GET request sent successfully from Flask to Node.js'})
-        url="http://localhost/result/student-result"
-        data = {'final_predict_list': final_predict_list}
+        url="http://localhost:2000/api/result/student-result"
+        data = {'final_predict_list': final_predict_list,
+                'userdata':userdetails}
 
         try:
             response = requests.get(url, json=data, verify=False)

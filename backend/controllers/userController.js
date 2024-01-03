@@ -58,24 +58,6 @@ const loginUser=asyncHandler(async (req,res)=>{
 
     //checking for user rollno
     const user = await User.findOne({rollno})
-    // if (user) {
-    //     const isPasswordValid = await bcrypt.compare(password, user.password);
-    
-    //     if (isPasswordValid) {
-    //       res.status(200).json({
-    //         _id: user.id,
-    //         name: user.name,
-    //         phoneno: user.phoneno,
-    //         rollno: user.rollno,
-    //         password: user.password,
-    //         token: generateToken(user._id, user.name, user.phoneno, user.rollno, user.password),
-    //       });
-    //     } else {
-    //       res.status(401).json({ error: "Invalid password" });
-    //     }
-    //   } else {
-    //     res.status(404).json({ error: "User not found" });
-    //   }
 
     if(user && (await bcrypt.compare(password,user.password))){
         res.status(200).json({
