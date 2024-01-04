@@ -13,18 +13,25 @@ const resultSchema = mongoose.Schema({
         type:String,
         required:['true','please add a name value']
     },
-    one:{
-        type:Number,
-        required:['true','please add a text value']
-    },
-    two:{
-        type:Number,
-        required:['true','please add a text value']
-    },
-    three:{
-        type:Number,
-        required:['true','please add a text value']
-    }
+    // one:{
+    //     type:Number,
+    //     required:['true','please add a text value']
+    // },
+    // two:{
+    //     type:Number,
+    //     required:['true','please add a text value']
+    // },
+    // three:{
+    //     type:Number,
+    //     required:['true','please add a text value']
+    // }
+    options:[
+        {
+            "Depression":Number,
+            "Anxiety":Number,
+            "Stress":Number
+        }
+    ]
 },
 {
     timestamps:true,
